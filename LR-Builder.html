@@ -88,7 +88,7 @@
          }
          document.getElementById("outputText").innerHTML = str;
          document.getElementById("outputText").rows = "20";
-         document.getElementById("output").className = "vis"
+         document.getElementById("output").className = "vis";
       }
 
       /* This formats, the outputs the template chosen in the output field. */
@@ -216,9 +216,23 @@
    </div>
 
    <div class="content">
-      
+      <div id="dropdownList">
+         <form>
+            <select onchange="filterForms()" id="towerTypes">
+               <option>Select your tower...</option>
+               <option value="fieldsBCS">BCS</option>
+               <option value="fieldsCST">CST</option>
+               <option value="fieldsERT">ERT</option>
+               <option value="fieldsISSorSoftware">ISS / Software</option>
+               <option value="fieldsMCS">MCS</option>
+               <option value="fieldsNetworking">Networking</option>
+               <option value="fieldsNS">Non-Stop</option>
+               <option value="fieldsStorage">Storage</option>
+            </select>
+         </form>
+      </div>
 
-      <div id="formTypesDropdown">
+      <div id="dropdownList">
          <form>
             <select onchange="buildInputForms()" id="formTypes">
                <option>Select a type of Lab Request...</option>

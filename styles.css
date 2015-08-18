@@ -238,11 +238,11 @@ body {
 .content table {
   width: 100%;
 }
-#formTypesDropdown {
+#dropdownList {
   width: 100%;
   text-align: center;
   padding-top: 1%;
-  padding-bottom: 1%;
+  padding-bottom: 0%;
   /*border-bottom: 1px solid #000000;*/
 }
 #inputArea {
