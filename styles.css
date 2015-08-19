@@ -214,9 +214,6 @@ body {
   width: 100%;
   height: 30px;
   text-align: center;
-  /* border-width: 1px;
-  border-color: #000000;
-  border-style: solid; */
 }
 .subheader h1 {
   padding: 0px;
@@ -234,6 +231,8 @@ body {
   margin: 0 2% 0 2%; 
   padding: 0 1% 0 1%;
   background: #E6E6E6;
+  font-family: Verdana, serif;
+  font-size: 12px;
 }
 .content table {
   width: 100%;
@@ -249,13 +248,13 @@ body {
   height: 100%;
   width: 100%;
   padding: 1% 0 1% 0;  
-  font-family: Verdana;
+  font-family: Verdana, serif;
   font-size: 12px;
 }
-#inputArea tr{
+#inputArea tr {
   text-align: right;
 }
-#inputArea td{
+#inputArea td {
   width: 50%;
   height: 25px;
 }
@@ -272,13 +271,15 @@ body {
   text-align: center;
   padding-top: 1%;
   padding-bottom: 1%;
-  /*border-top: 1px solid #000000;*/
 }
 #output {
   height: 100%;
   width: 100%;
   padding: 0% 0% 1% 0%; 
-  /*border-top: 1px solid #000000;*/
+}
+#outputText {
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 12px;
 }
 .invis {
   visibility: hidden;
