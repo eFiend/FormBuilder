@@ -15,23 +15,15 @@
          var x = document.getElementById("formTypes").value;
          if (x != "Select a type of Lab Request..."){
             document.getElementById("buttonBar").className = "vis";
-            if (x == "fieldsProjectExtension"){
-               inputBuilder(fieldsProjectExtension);
+            if (x == "fieldsProjectExtension"){inputBuilder(fieldsProjectExtension);
                for (i = 2; i < 9; i += 2){document.getElementById(i).className = "invis";}}
-            else if (x == "fieldsLabAccess"){
-               inputBuilder(fieldsLabAccess);}
-            else if (x == "fieldsInitialConfig"){
-               inputBuilder(fieldsInitialConfig);}
-            else if (x == "fieldsCablingChange"){
-               inputBuilder(fieldsCablingChange);}
-            else if (x == "fieldsLabratTv"){
-               inputBuilder(fieldsLabratTv);}
-            else if (x == "fieldsAssetChange"){
-               inputBuilder(fieldsAssetChange);}
-            else if (x == "fieldsLabTour"){
-               inputBuilder(fieldsLabTour);}
-            else if (x == "fieldsTrainingSession"){
-               inputBuilder(fieldsTrainingSession);}
+            else if (x == "fieldsLabAccess"){inputBuilder(fieldsLabAccess);}
+            else if (x == "fieldsInitialConfig"){inputBuilder(fieldsInitialConfig);}
+            else if (x == "fieldsCablingChange"){inputBuilder(fieldsCablingChange);}
+            else if (x == "fieldsLabratTv"){inputBuilder(fieldsLabratTv);}
+            else if (x == "fieldsAssetChange"){inputBuilder(fieldsAssetChange);}
+            else if (x == "fieldsLabTour"){inputBuilder(fieldsLabTour);}
+            else if (x == "fieldsTrainingSession"){inputBuilder(fieldsTrainingSession);}
          }
       }
 
@@ -73,20 +65,17 @@
                if (chosenForm == fieldsProjectExtension){
                   if (i == 0){str += "Part Status:" + "&#013;&#010;";}
                   else if (i == 10){str += "&#013;&#010;Project Status:" + "&#013;&#010;";}       
-                  if (document.getElementById("A" + j).value == ""){}
-                  else {str += "- " + chosenForm[i] + " " + document.getElementById("A" + j).value + "&#013;&#010;";}
+                  str = buildOutputThree(str, j, i);
                   str = str.replace('<strong>Part Status:</strong><br />','');
                   str = str.replace('<strong>Project Status:</strong><br />','');
                   str = str.replace('<br />','');               
                }
                else if(chosenForm == fieldsLabAccess){
-                  if(document.getElementById("A" + j).value == ""){}
-                  else {str += "- " + chosenForm[i] + " " + document.getElementById("A" + j).value + "&#013;&#010;";}
+                  str = buildOutputThree(str, j, i);
+                  
                }
                else if (chosenForm == fieldsInitialConfig){
-                  /* buildOutputThree(str, j, i); <GET THIS TO WORK. */ 
-                  if(document.getElementById("A" + j).value == ""){}
-                  else {str += "- " + chosenForm[i] + " " + document.getElementById("A" + j).value + "&#013;&#010;";}
+                  str = buildOutputThree(str, j, i);
                }
                str = str.replace('<strong>','');
                str = str.replace('</strong>','');
@@ -94,7 +83,6 @@
                j++;
             }
          }
-
          document.getElementById("outputText").innerHTML = str;
          document.getElementById("outputText").rows = "20";
          document.getElementById("output").className = "vis";
@@ -114,6 +102,7 @@
          return x;
       }
 
+      /* Used in conjunction with the loops to iteratively build the output. */
       function buildOutputThree(str, j, i){
          if(document.getElementById("A" + j).value == ""){}
          else {str += "" + chosenForm[i] + " " + document.getElementById("A" + j).value + "&#013;&#010;";}
