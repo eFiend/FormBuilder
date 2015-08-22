@@ -7,12 +7,13 @@
    <link rel="stylesheet" href="styles.css">
    <script src="jquery-2.1.4.min.js" type="text/javascript"></script>
    <script>
+      var chosenTower;
       var chosenForm;
 
       /* Performs actions that are dependent upon the tower selection. */
       function filterInputForms(){
          ViewReset1();
-
+         chosenTower = document.getElementById("towerTypes").value;
       }
 
       /* Clears the view when users change tower selections. */
@@ -28,15 +29,15 @@
          var x = document.getElementById("formTypes").value;
          if (x != "Select a type of Lab Request..."){
             document.getElementById("buttonBar").className = "vis";
-            if (x == "fieldsProjectExtension"){inputBuilder(fieldsProjectExtension);
+            if (x == "formProjectExtension"){inputBuilder(formProjectExtension);
                for (i = 2; i < 9; i += 2){document.getElementById(i).className = "invis";}}
-            else if (x == "fieldsLabAccess"){inputBuilder(fieldsLabAccess);}
-            else if (x == "fieldsInitialConfig"){inputBuilder(fieldsInitialConfig);}
-            else if (x == "fieldsCablingChange"){inputBuilder(fieldsCablingChange);}
-            else if (x == "fieldsLabratTv"){inputBuilder(fieldsLabratTv);}
-            else if (x == "fieldsAssetChange"){inputBuilder(fieldsAssetChange);}
-            else if (x == "fieldsLabTour"){inputBuilder(fieldsLabTour);}
-            else if (x == "fieldsTrainingSession"){inputBuilder(fieldsTrainingSession);}
+            else if (x == "formLabAccess"){inputBuilder(formLabAccess);}
+            else if (x == "formInitialConfig"){inputBuilder(formInitialConfig);}
+            else if (x == "formCablingChange"){inputBuilder(formCablingChange);}
+            else if (x == "formLabratTv"){inputBuilder(formLabratTv);}
+            else if (x == "formAssetChange"){inputBuilder(formAssetChange);}
+            else if (x == "formLabTour"){inputBuilder(formLabTour);}
+            else if (x == "formTrainingSession"){inputBuilder(formTrainingSession);}
          }
          else{ViewReset1()}
       }
@@ -48,6 +49,7 @@
          document.getElementById("outputText").rows = "1";
          document.getElementById("output").className = "invis";
          document.getElementById("buttonBar").className = "invis";
+         document.getElementById('copyBtn').innerHTML = "Copy";
       }
 
       /* Formats the output of each array so that the questions are on the left, 
@@ -77,7 +79,7 @@
                if (i == 0){
                   str += x + " Template:" + "&#013;&#010;&#010;";
                }
-               if (chosenForm == fieldsProjectExtension){
+               if (chosenForm == formProjectExtension){
                   if (i == 0){str += "Part Status:" + "&#013;&#010;";}
                   else if (i == 10){str += "&#013;&#010;Project Status:" + "&#013;&#010;";}       
                   str = buildOutputThree(str, j, i);
@@ -85,11 +87,11 @@
                   str = str.replace('<strong>Project Status:</strong><br />','');
                   str = str.replace('<br />','');               
                }
-               else if(chosenForm == fieldsLabAccess){
+               else if(chosenForm == formLabAccess){
                   str = buildOutputThree(str, j, i);
                   
                }
-               else if (chosenForm == fieldsInitialConfig){
+               else if (chosenForm == formInitialConfig){
                   str = buildOutputThree(str, j, i);
                }
                str = str.replace('<strong>','');
@@ -102,12 +104,13 @@
          document.getElementById("outputText").innerHTML = str;
          document.getElementById("outputText").rows = "20";
          document.getElementById("output").className = "vis";
+         document.getElementById('copyBtn').innerHTML = "Copy";
       }
 
       /* This formats, the outputs the template chosen in the output field. */
       function buildOutputTwo(){
          var x = document.getElementById("formTypes").value;
-         var x2 = x.slice(6,x.length);
+         var x2 = x.slice(4,x.length);
          x = "";
          for (i = 0; i < x2.length; i++){
             if(isUpperCase(x2.charAt(i))){
@@ -163,25 +166,35 @@
          document.getElementById("A4").value = str.slice(0,str.length-2);
       }
 
+      /* Allows users to copy the output text of the form. */
+      function copy(){
+         var copyTextarea = document.querySelector('#outputText');
+         copyTextarea.select();
+         try{
+            document.execCommand('copy');
+         }catch(err){}
+         document.getElementById('copyBtn').innerHTML = "Copied";
+      }
+
       /* Question and Answer fields stored in each array. The format is [Q1, A1, Q2, A2,...] */
-      var fieldsProjectExtension = ['<strong>Part Status:</strong><br />Were parts captured or ordered?', '<form id="form1"><br /><input onchange="setValPE()" type="radio" value="Yes" name="A1">Yes<input onchange="setValPE()" type="radio" value="No" name="A1">No<input class="invis" id="A1" type="text" required></form>','Part Origin(s):','<input onchange="setValPE()" type="checkbox" value="Customer Capture" name="A21">Customer Capture <input onchange="setValPE()" type="checkbox" value="ERT Owned Part(s)" name="A22">ERT Owned Part(s)<input onchange="setValPE()" type="checkbox" value="HP Spares" name="A23">HP Spares <input onchange="setValPE()" type="checkbox" value="Other" name="A24">Other','Part Number(s):','<input id="A3" type="text"><input class="invis" id="A2" type="text">','Part Description(s):','<input id="A4" type="text">','Part Quantity:','<input id="A5" type="text">','<strong>Project Status:</strong><br />Who is handling the technical elevation?','<br /><input id="A6" type="email">','Who is handling the escalation?','<input id="A7" type="email">','Technical issue(s) being tested:','<textarea id="A8" rows="3" cols="50">','Troubleshooting action plan:','<textarea id="A9" rows="3" cols="50">','Do any complications exist which hinder <br />your ability to complete this project?','<textarea id="A10" rows="3" cols="50">','Have any additional notes?','<textarea id="A11" rows="5" cols="50" required>','Expected completion date:','<input id="A12" type="date">',];
+      var formProjectExtension = ['<strong>Part Status:</strong><br />Were parts captured or ordered?', '<form id="form1"><br /><input onchange="setValPE()" type="radio" value="Yes" name="A1">Yes<input onchange="setValPE()" type="radio" value="No" name="A1">No<input class="invis" id="A1" type="text" required></form>','Part Origin(s):','<input onchange="setValPE()" type="checkbox" value="Customer Capture" name="A21">Customer Capture <input onchange="setValPE()" type="checkbox" value="ERT Owned Part(s)" name="A22">ERT Owned Part(s)<input onchange="setValPE()" type="checkbox" value="HP Spares" name="A23">HP Spares <input onchange="setValPE()" type="checkbox" value="Other" name="A24">Other','Part Number(s):','<input id="A3" type="text"><input class="invis" id="A2" type="text">','Part Description(s):','<input id="A4" type="text">','Part Quantity:','<input id="A5" type="text">','<strong>Project Status:</strong><br />Who is handling the technical elevation?','<br /><input id="A6" type="email">','Who is handling the escalation?','<input id="A7" type="email">','Technical issue(s) being tested:','<textarea id="A8" rows="3" cols="50">','Troubleshooting action plan:','<textarea id="A9" rows="3" cols="50">','Do any complications exist which hinder <br />your ability to complete this project?','<textarea id="A10" rows="3" cols="50">','Have any additional notes?','<textarea id="A11" rows="5" cols="50" required>','Expected completion date:','<input id="A12" type="date">',];
 
-      var fieldsLabAccess = ['Purpose of Lab Visit:','<textarea id="A1" rows="3" cols="50">','Names of All Lab Guests:','<textarea id="A2" rows="3" cols="50">','Name of Area or Equipment Being Accessed:','<textarea id="A3" rows="3" cols="50">','Will You Any Need Lab Resources?','<input onchange="setValLA()" type="checkbox" value="Lab Admin" name="A41">Lab Admin <input onchange="setValLA()" type="checkbox" value="Tool Cart" name="A42">Tool Cart <input onchange="setValLA()" type="checkbox" value="Crash Cart" name="A43">Crash Cart <input onchange="setValLA()" type="checkbox" value="KVM Terminal" name="A44">KVM Terminal <input onchange="setValLA()" type="checkbox" value="Other" name="A45">Other','Have any additional notes?','<textarea id="A5" rows="5" cols="50"></textarea><input class="invis" id="A4" type="text" size="1">'];
+      var formLabAccess = ['Purpose of Lab Visit:','<textarea id="A1" rows="3" cols="50">','Names of All Lab Guests:','<textarea id="A2" rows="3" cols="50">','Name of Area or Equipment Being Accessed:','<textarea id="A3" rows="3" cols="50">','Will You Any Need Lab Resources?','<input onchange="setValLA()" type="checkbox" value="Lab Admin" name="A41">Lab Admin <input onchange="setValLA()" type="checkbox" value="Tool Cart" name="A42">Tool Cart <input onchange="setValLA()" type="checkbox" value="Crash Cart" name="A43">Crash Cart <input onchange="setValLA()" type="checkbox" value="KVM Terminal" name="A44">KVM Terminal <input onchange="setValLA()" type="checkbox" value="Other" name="A45">Other','Have any additional notes?','<textarea id="A5" rows="5" cols="50"></textarea><input class="invis" id="A4" type="text" size="1">'];
 
-      var fieldsInitialConfig = ['Requester Name:','<input id="A1" type="text">','Requester Email:','<input id="A2" type="text">','Case Number:','<input id="A3" type="text">','Company:','<input id="A4" type="text">','Will you be capturing a customer part?<br /><a href="http://iss-gcc.hp.com/internal/forum/topic.asp?TOPIC_ID=16978">Read Before Capturing!</a>','<input id="A5" type="text">','Part Number(s):','<input id="A6" type="text">','Part Description(s):','<input id="A7" type="text">','Email of Manager Who Approved Capture: ','<input id="A8" type="text">','Owner of the Management Escalation:','<input id="A9" type="text">','Name of People Involved with Escalation:','<input id="A10" type="text">','Name of People Involved with Technical Elevation:','<input id="A11" type="text">','Issue Description:','<textarea id="A12" rows="5" cols="50">','Requested Server Equpiment:','<textarea id="A13" rows="3" cols="50">','Requested Storage Equipment:','<textarea id="A14" rows="3" cols="50">','Requested Networking Equipment:','<textarea id="A15" rows="3" cols="50">','Specific Hardware Configuration Required:','<textarea id="A16" rows="3" cols="50">','Preferred Slot# (Mezz, PCI, Interconnect, etc.','<input id="A17" type="text">','Required OS Version (Build, Update, Service Pack):','<input id="A18" type="text">','Required SPP or PSP Version:','<input id="A19" type="text">','Have Any Additional Configuration Details?','<textarea id="A20" rows="3" cols="50">','Would you prefer the lab-team perform the OS Install?','<input id="A21" type="text">','<strong>For Blades Only:</strong><br />OA & Interconnect Access Required?','<br /><input id="A22" type="text">','Interconnect Required:','<input id="A23" type="text">','IC Module Option Part Number:','<input id="A24" type="text">','IC Module Part Name:','<input id="A25" type="text">','Quantity:','<input id="A26" type="text">','IC Bay Location(s)','<input id="A27" type="text">','SFPs Option Part #:','<input id="A28" type="text">','Uplink Port #:','<input id="A29" type="text">','Cabling Configuration:','<input id="A30" type="text">','Uplink Connectivity (Please include device & port#s)','<input id="A31" type="text">','Have any additional configuration details?','<textarea id="A32" rows="3" cols="50">','Provide the exact steps to duplicate the issue:<br />(Please be as detailed as possible.)','<textarea id="A33" rows="3" cols="50">','Estimated duration of lab equipment usage:<br />(Default duration is one week.)','<input id="A34" type="text">','Expected outcome of lab testing:<br />(Required in all duplication attempts.)','<textarea id="A34" rows="3" cols="50">','Testing to be performed by:<br />(Default is name of requester.)','<input id="A35" type="text">','Environment reproduction to be performed by:<br />(Default is TS Global Lab Team)','<input id="A36" type="text">'];
+      var formInitialConfig = ['Requester Name:','<input id="A1" type="text">','Requester Email:','<input id="A2" type="text">','Case Number:','<input id="A3" type="text">','Company:','<input id="A4" type="text">','Will you be capturing a customer part?<br /><a href="http://iss-gcc.hp.com/internal/forum/topic.asp?TOPIC_ID=16978">Read Before Capturing!</a>','<input id="A5" type="text">','Part Number(s):','<input id="A6" type="text">','Part Description(s):','<input id="A7" type="text">','Email of Manager Who Approved Capture: ','<input id="A8" type="text">','Owner of the Management Escalation:','<input id="A9" type="text">','Name of People Involved with Escalation:','<input id="A10" type="text">','Name of People Involved with Technical Elevation:','<input id="A11" type="text">','Issue Description:','<textarea id="A12" rows="5" cols="50">','Requested Server Equpiment:','<textarea id="A13" rows="3" cols="50">','Requested Storage Equipment:','<textarea id="A14" rows="3" cols="50">','Requested Networking Equipment:','<textarea id="A15" rows="3" cols="50">','Specific Hardware Configuration Required:','<textarea id="A16" rows="3" cols="50">','Preferred Slot# (Mezz, PCI, Interconnect, etc.','<input id="A17" type="text">','Required OS Version (Build, Update, Service Pack):','<input id="A18" type="text">','Required SPP or PSP Version:','<input id="A19" type="text">','Have Any Additional Configuration Details?','<textarea id="A20" rows="3" cols="50">','Would you prefer the lab-team perform the OS Install?','<input id="A21" type="text">','<strong>For Blades Only:</strong><br />OA & Interconnect Access Required?','<br /><input id="A22" type="text">','Interconnect Required:','<input id="A23" type="text">','IC Module Option Part Number:','<input id="A24" type="text">','IC Module Part Name:','<input id="A25" type="text">','Quantity:','<input id="A26" type="text">','IC Bay Location(s)','<input id="A27" type="text">','SFPs Option Part #:','<input id="A28" type="text">','Uplink Port #:','<input id="A29" type="text">','Cabling Configuration:','<input id="A30" type="text">','Uplink Connectivity (Please include device & port#s)','<input id="A31" type="text">','Have any additional configuration details?','<textarea id="A32" rows="3" cols="50">','Provide the exact steps to duplicate the issue:<br />(Please be as detailed as possible.)','<textarea id="A33" rows="3" cols="50">','Estimated duration of lab equipment usage:<br />(Default duration is one week.)','<input id="A34" type="text">','Expected outcome of lab testing:<br />(Required in all duplication attempts.)','<textarea id="A35" rows="3" cols="50">','Testing to be performed by:<br />(Default is name of requester.)','<input id="A36" type="text">','Environment reproduction to be performed by:<br />(Default is TS Global Lab Team)','<input id="A37" type="text">'];
 
       /* Placeholders for Q and A values. */
-      var fieldsCablingChange = ['Under','Construction'];
+      var formCablingChange = ['Under','Construction'];
 
-      var fieldsLabTour = ['Under','Construction'];
+      var formLabTour = ['Under','Construction'];
 
-      var fieldsLabratTv = ['Under','Construction'];
+      var formLabratTv = ['Under','Construction'];
 
-      var fieldsAssetChange = ['Under','Construction'];
+      var formAssetChange = ['Under','Construction'];
 
-      var fieldsTrainingSession = ['Under','Construction'];
+      var formTrainingSession = ['Under','Construction'];
 
-      var fieldsLabTour = ['Under','Construction'];
+      var formLabTour = ['Under','Construction'];
    </script>
 
    <title>TS GL Lab Request Builder</title>
@@ -234,25 +247,25 @@
          <form id="form1">
             <select onchange="filterInputForms()" id="towerTypes" autofocus>
                <option>Select your tower...</option>
-               <option value="fieldsBCS">BCS</option>
-               <option value="fieldsCST">CST</option>
-               <option value="fieldsERT">ERT</option>
-               <option value="fieldsISSorSoftware">ISS / Software</option>
-               <option value="fieldsMCS">MCS</option>
-               <option value="fieldsNetworking">Networking</option>
-               <option value="fieldsNS">Non-Stop</option>
-               <option value="fieldsStorage">Storage</option>
+               <option value="towerBCS">BCS</option>
+               <option value="towerCST">CST</option>
+               <option value="towerERT">ERT</option>
+               <option value="towerISS or Software">ISS / Software</option>
+               <option value="towerMCS">MCS</option>
+               <option value="towerNetworking">Networking</option>
+               <option value="towerNS">Non-Stop</option>
+               <option value="towerStorage">Storage</option>
             </select>
             <select class="invis" onchange="buildInputForms()" id="formTypes">
                <option value="reset">Select your type of lab request...</option>
-               <option value="fieldsProjectExtension">Project Extension</option>
-               <option value="fieldsLabAccess">Lab Access</option>
-               <option value="fieldsInitialConfig">Initial Configuration</option>
-               <!-- <option value="fieldsCablingChange">Change Cables</option>
-               <option value="fieldsLabratTv">LabRAT TV (Mobile Lab Webcam)</option>
-               <option value="fieldsAssetChange">Asset Change</option>
-               <option value="fieldsTrainingSession">Training Session</option>
-               <option value="fieldsLabTour">Lab Tour</option> -->
+               <option value="formProjectExtension">Project Extension</option>
+               <option value="formLabAccess">Lab Access</option>
+               <option value="formInitialConfig">Initial Configuration</option>
+               <!-- <option value="formCablingChange">Change Cables</option>
+               <option value="formLabratTv">LabRAT TV (Mobile Lab Webcam)</option>
+               <option value="formAssetChange">Asset Change</option>
+               <option value="formTrainingSession">Training Session</option>
+               <option value="formLabTour">Lab Tour</option> -->
             </select>
          </form>
          Leave any field blank if it does not apply (instead of typing "NA").
@@ -267,11 +280,10 @@
       </div>
 
       <div class="invis" id="output">
-         <form>
-            Copy and paste this into your LabRAT request:
+            <button onclick="copy()" id="copyBtn">Copy</button>
+            then paste into your LabRAT request:
             <br />
-            <textarea id="outputText" cols="124"></textarea>
-         </form>
+            <textarea class="outputText" id="outputText" cols="124"></textarea>
       </div>
    </div>
 </div>
