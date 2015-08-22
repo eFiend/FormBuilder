@@ -9,9 +9,22 @@
    <script>
       var chosenForm;
 
+      /* Performs actions that are dependent upon the tower selection. */
+      function filterInputForms(){
+         ViewReset1();
+
+      }
+
+      /* Clears the view when users change tower selections. */
+      function ViewReset1(){
+         document.getElementById("formTypes").className = "vis";
+         document.getElementById("formTypes").value = "reset";
+         ViewReset2();
+      }
+
       /* Loads the correct form based off of the specified user input. */
-      function buildInputForms() {
-         viewReset();
+      function buildInputForms(){
+         ViewReset2();
          var x = document.getElementById("formTypes").value;
          if (x != "Select a type of Lab Request..."){
             document.getElementById("buttonBar").className = "vis";
@@ -25,10 +38,11 @@
             else if (x == "fieldsLabTour"){inputBuilder(fieldsLabTour);}
             else if (x == "fieldsTrainingSession"){inputBuilder(fieldsTrainingSession);}
          }
+         else{ViewReset1()}
       }
 
       /* Clears the viewing area when users swap between form types. */
-      function viewReset(){
+      function ViewReset2(){
          document.getElementById("inputArea").innerHTML = ""; 
          document.getElementById("outputText").innerHTML = "";
          document.getElementById("outputText").rows = "1";
@@ -57,6 +71,7 @@
          var str = "";
          var j = 1;
          var x = buildOutputTwo();
+         var d = new Date();
          for (i = 0; i < chosenForm.length; i+=2){ // iterates through all items in each array.
             if (j-1 < chosenForm.length / 2){ // iterates through only answers in each array.
                if (i == 0){
@@ -83,6 +98,7 @@
                j++;
             }
          }
+         str += "&#013;&#010;Request Generated at: " + d;
          document.getElementById("outputText").innerHTML = str;
          document.getElementById("outputText").rows = "20";
          document.getElementById("output").className = "vis";
@@ -148,7 +164,7 @@
       }
 
       /* Question and Answer fields stored in each array. The format is [Q1, A1, Q2, A2,...] */
-      var fieldsProjectExtension = ['<strong>Part Status:</strong><br />Were parts captured or ordered?', '<br /><input onchange="setValPE()" type="radio" value="Yes" name="A1" required>Yes<input onchange="setValPE()" type="radio" value="No" name="A1" required>No<input class="invis" id="A1" type="text">','Part Origin(s):','<input onchange="setValPE()" type="checkbox" value="Customer Capture" name="A21">Customer Capture <input onchange="setValPE()" type="checkbox" value="ERT Owned Part(s)" name="A22">ERT Owned Part(s)<input onchange="setValPE()" type="checkbox" value="HP Spares" name="A23">HP Spares <input onchange="setValPE()" type="checkbox" value="Other" name="A24">Other','Part Number(s):','<input id="A3" type="text"><input class="invis" id="A2" type="text">','Part Description(s):','<input id="A4" type="text">','Part Quantity:','<input id="A5" type="text">','<strong>Project Status:</strong><br />Who is handling the technical elevation?','<br /><input id="A6" type="email">','Who is handling the escalation?','<input id="A7" type="email">','Technical issue(s) being tested:','<textarea id="A8" rows="3" cols="50">','Troubleshooting action plan:','<textarea id="A9" rows="3" cols="50">','Do any complications exist which hinder <br />your ability to complete this project?','<textarea id="A10" rows="3" cols="50">','Have any additional notes?','<textarea id="A11" rows="5" cols="50">','Expected completion date:','<input id="A12" type="date">',];
+      var fieldsProjectExtension = ['<strong>Part Status:</strong><br />Were parts captured or ordered?', '<form id="form1"><br /><input onchange="setValPE()" type="radio" value="Yes" name="A1">Yes<input onchange="setValPE()" type="radio" value="No" name="A1">No<input class="invis" id="A1" type="text" required></form>','Part Origin(s):','<input onchange="setValPE()" type="checkbox" value="Customer Capture" name="A21">Customer Capture <input onchange="setValPE()" type="checkbox" value="ERT Owned Part(s)" name="A22">ERT Owned Part(s)<input onchange="setValPE()" type="checkbox" value="HP Spares" name="A23">HP Spares <input onchange="setValPE()" type="checkbox" value="Other" name="A24">Other','Part Number(s):','<input id="A3" type="text"><input class="invis" id="A2" type="text">','Part Description(s):','<input id="A4" type="text">','Part Quantity:','<input id="A5" type="text">','<strong>Project Status:</strong><br />Who is handling the technical elevation?','<br /><input id="A6" type="email">','Who is handling the escalation?','<input id="A7" type="email">','Technical issue(s) being tested:','<textarea id="A8" rows="3" cols="50">','Troubleshooting action plan:','<textarea id="A9" rows="3" cols="50">','Do any complications exist which hinder <br />your ability to complete this project?','<textarea id="A10" rows="3" cols="50">','Have any additional notes?','<textarea id="A11" rows="5" cols="50" required>','Expected completion date:','<input id="A12" type="date">',];
 
       var fieldsLabAccess = ['Purpose of Lab Visit:','<textarea id="A1" rows="3" cols="50">','Names of All Lab Guests:','<textarea id="A2" rows="3" cols="50">','Name of Area or Equipment Being Accessed:','<textarea id="A3" rows="3" cols="50">','Will You Any Need Lab Resources?','<input onchange="setValLA()" type="checkbox" value="Lab Admin" name="A41">Lab Admin <input onchange="setValLA()" type="checkbox" value="Tool Cart" name="A42">Tool Cart <input onchange="setValLA()" type="checkbox" value="Crash Cart" name="A43">Crash Cart <input onchange="setValLA()" type="checkbox" value="KVM Terminal" name="A44">KVM Terminal <input onchange="setValLA()" type="checkbox" value="Other" name="A45">Other','Have any additional notes?','<textarea id="A5" rows="5" cols="50"></textarea><input class="invis" id="A4" type="text" size="1">'];
 
@@ -215,8 +231,8 @@
 
    <div class="content">
       <div id="dropdownList">
-         <form>
-            <select onchange="filterForms()" id="towerTypes">
+         <form id="form1">
+            <select onchange="filterInputForms()" id="towerTypes" autofocus>
                <option>Select your tower...</option>
                <option value="fieldsBCS">BCS</option>
                <option value="fieldsCST">CST</option>
@@ -227,8 +243,8 @@
                <option value="fieldsNS">Non-Stop</option>
                <option value="fieldsStorage">Storage</option>
             </select>
-            <select onchange="buildInputForms()" id="formTypes">
-               <option>Select your type of lab request...</option>
+            <select class="invis" onchange="buildInputForms()" id="formTypes">
+               <option value="reset">Select your type of lab request...</option>
                <option value="fieldsProjectExtension">Project Extension</option>
                <option value="fieldsLabAccess">Lab Access</option>
                <option value="fieldsInitialConfig">Initial Configuration</option>
